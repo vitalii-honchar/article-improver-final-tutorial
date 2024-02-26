@@ -1,0 +1,92 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "article-improver"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Vitalii Honchar", email = "weaxme@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "openai",
+  "loguru",
+  "tiktoken",
+  "typer",
+  "pymupdf",
+  "pyyaml",
+  "rich"
+]
+
+[project.urls]
+Documentation = "https://github.com/unknown/article-improver#readme"
+Issues = "https://github.com/unknown/article-improver/issues"
+Source = "https://github.com/unknown/article-improver"
+
+[project.scripts]
+article-improver = "article_improver.main:app"
+
+[tool.hatch.version]
+path = "src/article_improver/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/article_improver tests}"
+
+[tool.coverage.run]
+source_pkgs = ["article_improver", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/article_improver/__about__.py",
+]
+
+[tool.coverage.paths]
+article_improver = ["src/article_improver", "*/article-improver/src/article_improver"]
+tests = ["tests", "*/article-improver/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]

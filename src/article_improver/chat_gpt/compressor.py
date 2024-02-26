@@ -24,14 +24,17 @@ UNWANTED_SYMBOLS = [
 
 TEMPLATE_WITHOUT_PUNCTUATION = "[^a-zA-Z0-9\s,.!?;:']"
 
+
 def remove_unwanted_symbols(content: str) -> str:
     for char in UNWANTED_SYMBOLS:
         content = content.replace(char, "")
     return content
 
+
 def compress(content: str) -> str:
     content = remove_unwanted_symbols(content)
     return re.sub(TEMPLATE_WITHOUT_PUNCTUATION, "", content)
+
 
 def compress_with_saving_punctuation(content: str) -> str:
     return remove_unwanted_symbols(content)

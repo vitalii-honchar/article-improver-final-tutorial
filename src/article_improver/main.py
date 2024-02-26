@@ -16,7 +16,7 @@ def execute_chat_gpt_command(description, fn):
     if cfg is None:
         configure_command()
         print("Run command again.")
-        
+
     else:
         with Progress(
             SpinnerColumn(),
@@ -34,11 +34,12 @@ def seo_command(filename: str):
 
     execute_chat_gpt_command("Generating seo recommendations!", cmd)
 
+
 @app.command(name="fix-typos")
 def fix_typos_command(filename: str):
     async def cmd():
         await fix_typos.handle(chat_gpt, filename)
-    
+
     execute_chat_gpt_command("Fixing typos!", cmd)
 
 

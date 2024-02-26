@@ -14,7 +14,7 @@ FIELD_IMPROVEMENTS = "improvements"
 PROMPT = f"""
 As an SEO optimization assistant, your task is to evaluate an article provided within triple quotes. Analyze the technical accuracy of the content and its alignment with SEO best practices. Your analysis should culminate in the provision of:
 
-1. Three SEO-optimized titles for the article, crafted to improve search engine visibility and attract more readers.
+1. Ten SEO-optimized titles for the article, crafted to improve search engine visibility and attract more readers.
 2. A numerical rating for the overall quality of the article on a scale from 1 to 10, considering factors such as relevance, readability, and SEO optimization.
 3. Identification of the article's strengths and weaknesses, specifically highlighting three areas where the article excels and three aspects that need improvement.
 
@@ -28,6 +28,7 @@ Please format your response as a JSON object with the following fields:
 Ensure the response excludes extraneous formatting or labels, presenting only the JSON object for direct usability in Python.
 """
 
+
 async def handle(chat_gpt: ChatGpt, filename: str):
     content = compress(pdf.read_pdf(filename))
     completion = await chat_gpt.get_completion(PROMPT, content, MODEL_GPT_4)
@@ -35,9 +36,17 @@ async def handle(chat_gpt: ChatGpt, filename: str):
 
     completion_json = json.loads(completion)
 
-    output.print_list_field("SEO optimized titles:", FIELD_SEO_OPTIMIZED_TITLES, completion_json)
-    logger.info(f"Rating: {completion_json[FIELD_RATING]}")
-    output.print_list_field("Incorrect sides:", FIELD_INCORRECT, completion_json)
-    output.print_list_field("Strong sides:", FIELD_STRONG_SIDES, completion_json)
-    output.print_list_field("Weak sides:", FIELD_WEAK_SIDES, completion_json)
-    output.print_list_field("Improvements:", FIELD_IMPROVEMENTS, completion_json)
+    output.print_list_field(
+        ":rocket: SEO optimized titles:", FIELD_SEO_OPTIMIZED_TITLES, completion_json
+    )
+    logger.info(f"🥇 Rating: {completion_json[FIELD_RATING]}")
+    output.print_list_field(
+        ":exploding_head: Incorrect sides:", FIELD_INCORRECT, completion_json
+    )
+    output.print_list_field(
+        ":heavy_check_mark: Strong sides:", FIELD_STRONG_SIDES, completion_json
+    )
+    output.print_list_field(":x: Weak sides:", FIELD_WEAK_SIDES, completion_json)
+    output.print_list_field(
+        ":building_construction:  Improvements:", FIELD_IMPROVEMENTS, completion_json
+    )

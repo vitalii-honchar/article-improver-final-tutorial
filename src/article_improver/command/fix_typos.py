@@ -3,8 +3,6 @@ from article_improver.chat_gpt.compressor import compress_with_saving_punctuatio
 from article_improver import pdf, output
 import json
 import re
-from rich import print
-
 
 FIELD_TEXT = "text"
 
@@ -18,12 +16,13 @@ Please format your response as a JSON object with the following fields:
 Ensure the response excludes extraneous formatting or labels, presenting only the JSON object for direct usability in Python.
 """
 
-REGEX_SPLIT_TO_SENTENCES = r'(?<=\w)[.!?;:](?=\s|$)'
+REGEX_SPLIT_TO_SENTENCES = r"(?<=\w)[.!?;:](?=\s|$)"
 
 
 def convert_to_sentences(content: str) -> list[str]:
-    sentences = re.split(REGEX_SPLIT_TO_SENTENCES, content) 
+    sentences = re.split(REGEX_SPLIT_TO_SENTENCES, content)
     return [sentence.strip() for sentence in sentences if sentence.strip()]
+
 
 def create_batches(content: str, model: str) -> list[str]:
     sentences = convert_to_sentences(content)

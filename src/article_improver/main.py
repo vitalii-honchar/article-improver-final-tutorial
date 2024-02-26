@@ -1,7 +1,7 @@
 import typer
 from article_improver import config
 from article_improver.chat_gpt import ChatGpt
-from article_improver.command import config_command, seo
+from article_improver.command import config_command, seo, fix_typos
 from openai import AsyncOpenAI
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
@@ -33,6 +33,13 @@ def seo_command(filename: str):
         await seo.handle(chat_gpt, filename)
 
     execute_chat_gpt_command("Generating seo recommendations!", cmd)
+
+@app.command(name="fix-typos")
+def fix_typos_command(filename: str):
+    async def cmd():
+        await fix_typos.handle(chat_gpt, filename)
+    
+    execute_chat_gpt_command("Fixing typos!", cmd)
 
 
 @app.command(name="configure")

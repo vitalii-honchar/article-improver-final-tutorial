@@ -49,4 +49,4 @@ async def handle(chat_gpt: ChatGpt, filename: str):
     for batch in batches:
         completion = await chat_gpt.get_completion(PROMPT, batch, MODEL_GPT_3)
         completion_json = json.loads(completion)
-        output.print_list_field(":smiley: Fixed typos", FIELD_TEXT, completion_json)
+        output.print_list_field(":smiley: Fixed typos:", FIELD_TEXT, completion_json)

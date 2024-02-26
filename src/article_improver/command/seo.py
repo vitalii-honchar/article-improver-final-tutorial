@@ -32,7 +32,6 @@ Ensure the response excludes extraneous formatting or labels, presenting only th
 async def handle(chat_gpt: ChatGpt, filename: str):
     content = compress(pdf.read_pdf(filename))
     completion = await chat_gpt.get_completion(PROMPT, content, MODEL_GPT_4)
-    logger.bind(completion=completion).info("response from chat gpt")
 
     completion_json = json.loads(completion)
 

@@ -1,7 +1,7 @@
 import typer
 from article_improver import config
 from article_improver.chat_gpt.chat_gpt import ChatGpt
-from article_improver.command import config_command, seo, fix_typos
+from article_improver.command import config_command, seo, fix_typos, announcements
 from openai import AsyncOpenAI
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
@@ -41,6 +41,14 @@ def fix_typos_command(filename: str):
         await fix_typos.handle(chat_gpt, filename)
 
     execute_chat_gpt_command("Fixing typos!", cmd)
+
+
+@app.command(name="announcements")
+def fix_typos_command(filename: str):
+    async def cmd():
+        await announcements.handle(chat_gpt, filename)
+
+    execute_chat_gpt_command("Creating announcements!", cmd)
 
 
 @app.command(name="configure")

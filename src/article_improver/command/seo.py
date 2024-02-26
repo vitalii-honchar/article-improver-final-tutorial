@@ -1,8 +1,8 @@
 from loguru import logger
-from article_improver.chat_gpt import ChatGpt, MODEL_GPT_4
-from article_improver import pdf
+from article_improver.chat_gpt.chat_gpt import ChatGpt, MODEL_GPT_4
+from article_improver.chat_gpt.compressor import compress
+from article_improver import pdf, output
 import json
-import re
 
 FIELD_SEO_OPTIMIZED_TITLES = "seo_optimized_titles"
 FIELD_RATING = "rating"
@@ -28,42 +28,6 @@ Please format your response as a JSON object with the following fields:
 Ensure the response excludes extraneous formatting or labels, presenting only the JSON object for direct usability in Python.
 """
 
-UNWANTED_SYMBOLS = [
-    "\u2014",
-    "\u2013",
-    "\u2012",
-    "\u2010",
-    "\u2022",
-    "\u2026",
-    "\u00A0",
-    "\u201C",
-    "\u201D",
-    "\u2018",
-    "\u2019",
-    "\u2122",
-    "\u00AE",
-    "\u00A9",
-    "\u200a",
-    "http:",
-    "https:",
-    "\n",
-    "\t",
-]
-
-
-def print_field(msg: str, field: str, response: dict[str, str]):
-    if len(response[field]) > 0:
-        logger.info(msg)
-        for i, value in enumerate(response[field]):
-            logger.info(f"  {i + 1}. {value}")
-
-
-def compress(content: str) -> str:
-    for char in UNWANTED_SYMBOLS:
-        content = content.replace(char, "")
-    return re.sub(r"[^a-zA-Z0-9\s,.!?;:']", "", content)
-
-
 async def handle(chat_gpt: ChatGpt, filename: str):
     content = compress(pdf.read_pdf(filename))
     completion = await chat_gpt.get_completion(PROMPT, content, MODEL_GPT_4)
@@ -71,9 +35,9 @@ async def handle(chat_gpt: ChatGpt, filename: str):
 
     completion_json = json.loads(completion)
 
-    print_field("SEO optimized titles:", FIELD_SEO_OPTIMIZED_TITLES, completion_json)
+    output.print_list_field("SEO optimized titles:", FIELD_SEO_OPTIMIZED_TITLES, completion_json)
     logger.info(f"Rating: {completion_json[FIELD_RATING]}")
-    print_field("Incorrect sides:", FIELD_INCORRECT, completion_json)
-    print_field("Strong sides:", FIELD_STRONG_SIDES, completion_json)
-    print_field("Weak sides:", FIELD_WEAK_SIDES, completion_json)
-    print_field("Improvements:", FIELD_IMPROVEMENTS, completion_json)
+    output.print_list_field("Incorrect sides:", FIELD_INCORRECT, completion_json)
+    output.print_list_field("Strong sides:", FIELD_STRONG_SIDES, completion_json)
+    output.print_list_field("Weak sides:", FIELD_WEAK_SIDES, completion_json)
+    output.print_list_field("Improvements:", FIELD_IMPROVEMENTS, completion_json)

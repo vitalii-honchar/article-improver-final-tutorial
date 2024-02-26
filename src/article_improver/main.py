@@ -1,6 +1,6 @@
 import typer
 from article_improver import config
-from article_improver.chat_gpt import ChatGpt
+from article_improver.chat_gpt.chat_gpt import ChatGpt
 from article_improver.command import config_command, seo, fix_typos
 from openai import AsyncOpenAI
 from rich.progress import Progress, SpinnerColumn, TextColumn

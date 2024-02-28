@@ -44,7 +44,7 @@ def fix_typos_command(filename: str):
 
 
 @app.command(name="announcements")
-def fix_typos_command(filename: str):
+def create_announcements_command(filename: str):
     async def cmd():
         await announcements.handle(chat_gpt, filename)
 

@@ -29,6 +29,10 @@ def execute_chat_gpt_command(description, fn):
 
 @app.command(name="seo")
 def seo_command(filename: str):
+    """
+    Provides SEO optimized titles for an article from the PDF file.
+    """
+
     async def cmd():
         await seo.handle(chat_gpt, filename)
 
@@ -37,6 +41,10 @@ def seo_command(filename: str):
 
 @app.command(name="fix-typos")
 def fix_typos_command(filename: str):
+    """
+    Fixes typos in an article from the PDF file.
+    """
+
     async def cmd():
         await fix_typos.handle(chat_gpt, filename)
 
@@ -45,6 +53,10 @@ def fix_typos_command(filename: str):
 
 @app.command(name="announcements")
 def create_announcements_command(filename: str):
+    """
+    Creates announcements for LinkedIn and Twitter from an article in the PDF file.
+    """
+
     async def cmd():
         await announcements.handle(chat_gpt, filename)
 
@@ -53,6 +65,10 @@ def create_announcements_command(filename: str):
 
 @app.command(name="configure")
 def configure_command():
+    """
+    Generates or regenerates configuration file.
+    """
+
     config_command.handle(config.DEFAULT_CONFIG_FILE, config.DEFAULT_CONFIG_FILE_FOLDER)
 
 

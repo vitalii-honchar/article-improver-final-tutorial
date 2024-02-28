@@ -10,6 +10,7 @@ FIELD_INCORRECT = "incorrect"
 FIELD_STRONG_SIDES = "strong_sides"
 FIELD_WEAK_SIDES = "weak_sides"
 FIELD_IMPROVEMENTS = "improvements"
+FIELD_SEO_KEYWORDS = "seo_keywords"
 
 PROMPT = f"""
 As an SEO optimization assistant, your task is to evaluate an article provided within triple quotes. Analyze the technical accuracy of the content and its alignment with SEO best practices. Your analysis should culminate in the provision of:
@@ -17,6 +18,7 @@ As an SEO optimization assistant, your task is to evaluate an article provided w
 1. Ten SEO-optimized titles for the article, crafted to improve search engine visibility and attract more readers.
 2. A numerical rating for the overall quality of the article on a scale from 1 to 10, considering factors such as relevance, readability, and SEO optimization.
 3. Identification of the article's strengths and weaknesses, specifically highlighting three areas where the article excels and three aspects that need improvement.
+4. Ten SEO keywords proposed by you to improve search engine visibility and attract more readers. 
 
 Please format your response as a JSON object with the following fields:
 - "{FIELD_SEO_OPTIMIZED_TITLES}": An array of strings containing three suggested titles. Example: ["SEO Optimized Title 1", "SEO Optimized Title 2", "SEO Optimized Title 3"].
@@ -25,6 +27,7 @@ Please format your response as a JSON object with the following fields:
 - "{FIELD_STRONG_SIDES}": An array of strings outlining the article's three main strengths. Example: ["Strength 1", "Strength 2", "Strength 3"].
 - "{FIELD_WEAK_SIDES}": An array of strings detailing the article's three main weaknesses. Example: ["Weakness 1", "Weakness 2", "Weakness 3"].
 - "{FIELD_IMPROVEMENTS}": An array of strings detailing the article's three points of improvements proposed by you. Example: ["Improvement 1", "Improvement 2", "Improvement 3"].
+- "{FIELD_SEO_KEYWORDS}": An array of strings detailing the article's ten SEO keywords which should be included in an article proposed by you. Example: ["Keyword 1", "Keyword 2", "Keyword 3"].
 Ensure the response excludes extraneous formatting or labels, presenting only the JSON object for direct usability in Python.
 """
 
@@ -37,6 +40,9 @@ async def handle(chat_gpt: ChatGpt, filename: str):
 
     output.print_list_field(
         ":rocket: SEO optimized titles:", FIELD_SEO_OPTIMIZED_TITLES, completion_json
+    )
+    output.print_list_field(
+        "🔍 SEO keywords:", FIELD_SEO_KEYWORDS, completion_json
     )
     logger.info(f"🥇 Rating: {completion_json[FIELD_RATING]}")
     output.print_list_field(
